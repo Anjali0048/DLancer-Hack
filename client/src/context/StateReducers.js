@@ -31,7 +31,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         showSignupModal: true,
-        showLoginModal: true,
+        showLoginModal: false,
       };
     case reducerCases.SWITCH_MODE:
       return {

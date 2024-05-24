@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +8,77 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int        @id @default(autoincrement())
+  email String  @unique
+  password String 
+  isSocialLogin Boolean? @default(false)
+  username String? @unique
+  fullName String?
+  description String?
+  profileImage String?
+  isProfileInfoSet Boolean? @default(false)
+  createdAt DateTime @default(now())
+  gigs Gigs[]
+  orders Orders[]
+  reviews Reviews[]
+  messagesSent Message[] @relation("sentMessages")
+  messagesReceived Message[] @relation("receivedMessages")
+}
+
+model Gigs {
+  id Int @id @default(autoincrement())
+  title String 
+  description String
+  category String
+  deliveryTime Int
+  revisions Int
+  features String[]
+  price Int
+  shortDesc String
+  createdAt DateTime @default(now())
+  images String[]
+  createdBy User @relation(fields: [userId], references: [id])
+  userId Int
+  orders Orders[]
+  reviews Reviews[]
+}
+
+model Orders {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  buyer User @relation(fields: [buyerId],references: [id])
+  buyerId Int
+  paymentIntent String @unique
+  isCompleted Boolean @default(false)
+  gig Gigs @relation(fields:[gigId],references: [id])
+  gigId Int
+  price Int
+  messages Message[]
+}
+
+model Reviews {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  rating Int
+  reviewText String?
+  gig Gigs @relation(fields:[gigId],references: [id])
+  gigId Int
+  reviewer User @relation(fields: [reviewerId],references: [id])
+  reviewerId Int
+} 
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String
+  createdAt DateTime @default(now())
+  isRead Boolean @default(false)
+  sender User @relation("sentMessages", fields: [senderId], references: [id])
+  senderId Int
+  recipient User @relation("receivedMessages", fields: [recipientId], references: [id])
+  recipientId Int
+  order Orders @relation(fields: [orderId], references: [id])
+  orderId Int
 }

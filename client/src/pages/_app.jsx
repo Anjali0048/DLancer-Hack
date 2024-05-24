@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
       router.pathname.includes("/seller") ||
       router.pathname.includes("/buyer")
     ) {
-      if (!cookies. wt) {
+      if (!cookies.jwt) {
         router.push("/");
       }
     }
@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
       <Head>
-        <title>Fiverr Clone</title>
+        <title>DLancer-App</title>
       </Head>
       <div className="relative flex flex-col h-screen justify-between">
         <Navbar />

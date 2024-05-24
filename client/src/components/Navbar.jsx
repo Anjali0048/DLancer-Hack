@@ -1,23 +1,23 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { GET_USER_INFO, HOST } from "../utils/constants";
 import ContextMenu from "./ContextMenu";
 import { useStateProvider } from "../context/StateContext";
-import { reducerCases } from "../context/constants"; 
+import { reducerCases } from "../context/constants";
 
-const Navbar = () => {
+function Navbar() {
   const [cookies] = useCookies();
   const router = useRouter();
   const [navFixed, setNavFixed] = useState(false);
   const [searchData, setSearchData] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [{ showLoginModal, showSignupModal, isSeller, userInfo }, dispatch] = useStateProvider();
+  const [{ showLoginModal, showSignupModal, isSeller, userInfo }, dispatch] =
+    useStateProvider();
 
   const handleLogin = () => {
     if (showSignupModal) {
@@ -159,6 +159,7 @@ const Navbar = () => {
       },
     },
   ];
+
   return (
     <>
       {isLoaded && (
@@ -291,6 +292,6 @@ const Navbar = () => {
       )}
     </>
   );
-};
+}
 
 export default Navbar;
