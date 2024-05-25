@@ -12,5 +12,5 @@ export const orderRoutes = Router();
 
 orderRoutes.post("/create", verifyToken, createOrder);
 orderRoutes.put("/success", verifyToken, confirmOrder);
-orderRoutes.get("/get-buyer-orders", verifyToken, getBuyerOrders);
-orderRoutes.get("/get-seller-orders", verifyToken, getSellerOrders);
+orderRoutes.get("/get-client-orders", verifyToken, getBuyerOrders);
+orderRoutes.get("/get-freelancer-orders", verifyToken, getSellerOrders);

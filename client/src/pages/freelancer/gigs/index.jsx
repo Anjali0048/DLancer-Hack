@@ -65,7 +65,7 @@ function Index() {
                   <td className="px-6 py-4">{deliveryTime}</td>
                   <td className="px-6 py-4 text-right">
                     <Link
-                      href={`/seller/gigs/${id}`}
+                      href={`/freelancer/gigs/${id}`}
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit

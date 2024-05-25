@@ -108,7 +108,7 @@ function Details() {
               <p>{gigData.description}</p>
             </div>
           </div>
-          {/* About the seller */}
+          {/* About the freelancer */}
           <div className="">
             <h3 className="text-3xl my-5 font-medium text-[#404145]">
               About the Seller

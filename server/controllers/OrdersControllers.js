@@ -24,7 +24,7 @@ export const createOrder = async (req, res, next) => {
         data: {
           paymentIntent: paymentIntent.id,
           price: gig?.price,
-          buyer: { connect: { id: req?.userId } },
+          client: { connect: { id: req?.userId } },
           gig: { connect: { id: gig?.id } },
         },
       });
@@ -87,7 +87,7 @@ export const getSellerOrders = async (req, res, next) => {
         },
         include: {
           gig: true,
-          buyer: true,
+          client: true,
         },
       });
       return res.status(200).json({ orders });

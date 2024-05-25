@@ -1,5 +1,4 @@
 import "../globals.css";
-import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
 import Head from "next/head";
@@ -7,6 +6,7 @@ import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import { StateProvider } from "../context/StateContext";
+import { StateProviderBlock } from "../context/StateContext_Block";
 import reducer, { initialState } from "../context/StateReducers";
 
 export default function App({ Component, pageProps }) {
@@ -14,8 +14,8 @@ export default function App({ Component, pageProps }) {
   const [cookies] = useCookies();
   useEffect(() => {
     if (
-      router.pathname.includes("/seller") ||
-      router.pathname.includes("/buyer")
+      router.pathname.includes("/freelancer") ||
+      router.pathname.includes("/client")
     ) {
       if (!cookies.jwt) {
         router.push("/");
@@ -25,6 +25,7 @@ export default function App({ Component, pageProps }) {
 
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
+      <StateProviderBlock initialState={initialState} reducer={reducer}>
       <Head>
         <title>DLancer-App</title>
       </Head>
@@ -37,8 +38,8 @@ export default function App({ Component, pageProps }) {
         >
           <Component {...pageProps} />
         </div>
-        <Footer />
       </div>
+    </StateProviderBlock>
     </StateProvider>
   );
 }

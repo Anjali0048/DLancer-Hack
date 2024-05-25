@@ -61,7 +61,7 @@ function Index() {
             <div className="grid grid-cols-3 gap-10 w-full">
               <div
                 className="shadow-md h-max p-10 flex flex-col gap-2 cursor-pointer hover:shadow-xl transition-all duration-300"
-                onClick={() => router.push("/seller/gigs")}
+                onClick={() => router.push("/freelancer/gigs")}
               >
                 <h2 className="text-xl">Total Gigs</h2>
                 <h3 className="text-[#1DBF73] text-3xl font-extrabold">
@@ -70,7 +70,7 @@ function Index() {
               </div>
               <div
                 className="shadow-md h-max p-10 flex flex-col gap-2 cursor-pointer hover:shadow-xl transition-all duration-300"
-                onClick={() => router.push("/seller/orders")}
+                onClick={() => router.push("/freelancer/orders")}
               >
                 <h2 className="text-xl">Total Orders</h2>
                 <h3 className="text-[#1DBF73] text-3xl font-extrabold">
@@ -79,7 +79,7 @@ function Index() {
               </div>
               <div
                 className="shadow-md h-max p-10 flex flex-col gap-2 cursor-pointer hover:shadow-xl transition-all duration-300"
-                onClick={() => router.push("/seller/unread-messages")}
+                onClick={() => router.push("/freelancer/unread-messages")}
               >
                 <h2 className="text-xl"> Unread Messages</h2>
                 <h3 className="text-[#1DBF73] text-3xl font-extrabold">

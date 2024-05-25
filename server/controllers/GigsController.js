@@ -25,6 +25,7 @@ export const addGig = async (req, res, next) => {
           revisions,
           time,
           shortDesc,
+          clientAddress,
         } = req.query;
         const prisma = new PrismaClient();
 
@@ -40,6 +41,7 @@ export const addGig = async (req, res, next) => {
             revisions: parseInt(revisions),
             createdBy: { connect: { id: req.userId } },
             images: fileNames,
+            clientAddress,
           },
         });
 

@@ -5,4 +5,4 @@ import { getSellerData } from "../controllers/DashboardController.js";
 
 export const dashboardRoutes = Router();
 
-dashboardRoutes.get("/seller", verifyToken, getSellerData);
+dashboardRoutes.get("/freelancer", verifyToken, getSellerData);

@@ -110,7 +110,7 @@ function EditGig() {
         }
       );
       if (response.status === 201) {
-        router.push("/seller/gigs");
+        router.push("/freelancer/gigs");
       }
     }
   };

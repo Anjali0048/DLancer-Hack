@@ -28,7 +28,7 @@ function Orders() {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Order Id
+                Freelancer Add.
               </th>
               <th scope="col" className="px-6 py-3">
                 Name
@@ -43,13 +43,10 @@ function Orders() {
                 Delivery Time
               </th>
               <th scope="col" className="px-6 py-3">
-                Ordered By
+                Approve
               </th>
               <th scope="col" className="px-6 py-3">
-                Order Date
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Send Message
+                Reject
               </th>
             </tr>
           </thead>
@@ -70,13 +67,13 @@ function Orders() {
                   <td className="px-6 py-4">{order.price}</td>
                   <td className="px-6 py-4">{order.gig.deliveryTime}</td>
                   <td className="px-6 py-4">
-                    {order.buyer.fullName} ({order.buyer.username})
+                    {order.client.fullName} ({order.client.username})
                   </td>
                   <td className="px-6 py-4">{order.createdAt.split("T")[0]}</td>
 
                   <td className="px-6 py-4 ">
                     <Link
-                      href={`/seller/orders/messages/${order.id}`}
+                      href={`/freelancer/orders/messages/${order.id}`}
                       className="font-medium text-blue-600  hover:underline"
                     >
                       Send

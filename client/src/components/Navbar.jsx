@@ -10,13 +10,18 @@ import ContextMenu from "./ContextMenu";
 import { useStateProvider } from "../context/StateContext";
 import { reducerCases } from "../context/constants";
 
+//Blockchain
+
+import { useStateProviderBlock } from "../context/StateContext_Block";
+import {ethers} from "ethers"
+
 function Navbar() {
   const [cookies] = useCookies();
   const router = useRouter();
   const [navFixed, setNavFixed] = useState(false);
   const [searchData, setSearchData] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [{ showLoginModal, showSignupModal, isSeller, userInfo }, dispatch] =
+  const [{ showLoginModal, showSignupModal, isFreelancer, userInfo }, dispatch] =
     useStateProvider();
 
   const handleLogin = () => {
@@ -67,17 +72,17 @@ function Navbar() {
   }, [router.pathname]);
 
   const handleOrdersNavigate = () => {
-    if (isSeller) router.push("/seller/orders");
-    router.push("/buyer/orders");
+    if (isFreelancer) router.push("/freelancer/orders");
+    router.push("/client/orders");
   };
 
   const handleModeSwitch = () => {
-    if (isSeller) {
+    if (isFreelancer) {
       dispatch({ type: reducerCases.SWITCH_MODE });
-      router.push("/buyer/orders");
+      router.push("/client/orders");
     } else {
       dispatch({ type: reducerCases.SWITCH_MODE });
-      router.push("/seller");
+      router.push("/freelancer");
     }
   };
 
@@ -160,6 +165,20 @@ function Navbar() {
     },
   ];
 
+  // Blockchain
+  const { state } = useStateProviderBlock();
+
+  const [account, setAccount] = useState("")
+
+  // const currentAddress = state.currentAddress;
+  // console.log("Current Address from navbar", currentAddress)
+
+  const connectHandler = async () => {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account = ethers.getAddress(accounts[0])
+    setAccount(account);
+}
+
   return (
     <>
       {isLoaded && (
@@ -229,10 +248,10 @@ function Navbar() {
             </ul>
           ) : (
             <ul className="flex gap-10 items-center">
-              {isSeller && (
+              {isFreelancer && (
                 <li
                   className="cursor-pointer text-[#1DBF73] font-medium"
-                  onClick={() => router.push("/seller/gigs/create")}
+                  onClick={() => router.push("/freelancer/gigs/create")}
                 >
                   Create Gig
                 </li>
@@ -244,7 +263,7 @@ function Navbar() {
                 Orders
               </li>
 
-              {isSeller ? (
+              {isFreelancer ? (
                 <li
                   className="cursor-pointer font-medium"
                   onClick={handleModeSwitch}
@@ -259,6 +278,24 @@ function Navbar() {
                   Switch To client
                 </li>
               )}
+              <li>
+              {account ? (
+                <button
+                    type="button"
+                    className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800  font-medium  text-lg px-10 py-3 rounded-md "
+                >
+                    {account.slice(0, 6) + '...' + account.slice(38, 42)}
+                </button>
+            ) : (
+                <button
+                    type="button"
+                    className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800  font-medium  text-lg px-10 py-3 rounded-md "
+                    onClick={connectHandler}
+                >
+                    Connect
+                </button>
+            )}
+              </li>
               <li
                 className="cursor-pointer"
                 onClick={(e) => {

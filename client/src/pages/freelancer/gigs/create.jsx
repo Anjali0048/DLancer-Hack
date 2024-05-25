@@ -3,8 +3,13 @@ import { categories } from "../../../utils/categories";
 import { ADD_GIG_ROUTE } from "../../../utils/constants";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { ethers } from "ethers";
+
+//Blockchain
+
+import { useStateProviderBlock } from "../../../context/StateContext_Block";
 
 function CreateGigs() {
   const [cookies] = useCookies();
@@ -14,6 +19,7 @@ function CreateGigs() {
   const labelClassName = "mb-2 text-lg font-medium text-gray-900  ";
   const [files, setFile] = useState([]);
   const [features, setfeatures] = useState([]);
+  const [client, setClient] = useState("");
   const [data, setData] = useState({
     title: "",
     category: "",
@@ -65,6 +71,7 @@ function CreateGigs() {
         revisions,
         time,
         shortDesc,
+        clientAddress: client,
       };
       const response = await axios.post(ADD_GIG_ROUTE, formData, {
         withCredentials: true,
@@ -75,16 +82,93 @@ function CreateGigs() {
         params: gigData,
       });
       if (response.status === 201) {
-        router.push("/seller/gigs");
+        router.push("/freelancer/gigs");
       }
     }
   };
+
+  //BlockChain implementation
+  const { state, dispatch } = useStateProviderBlock();
+  const [balance, setBalance] = useState(null);
+  const [clicked, setClicked] = useState(false);
+  console.log(client);
+
+  const currentAddress = state.currentAddress;
+  const freelanceTokenContract = state.freelanceTokenContract;
+  console.log("this is freelanceTokenContract", freelanceTokenContract);
+
+  const escrowAddress = state.escrowAddress;
+  console.log("this is escrowAddress", escrowAddress);
+
+  const balanceOf = async (currentAddress) => {
+    try {
+      const balance = await freelanceTokenContract.balanceOf(currentAddress);
+      setBalance(ethers.formatUnits(balance, 18));
+    } catch (error) {
+      console.error("Error finding balanceOf account:", error);
+    }
+  };
+
+  const mintTokens = async (amount) => {
+    try {
+      const tx = await freelanceTokenContract.mint(
+        client,
+        ethers.parseUnits(amount.toString(), "ether")
+      );
+      // setClient(await escrowContract.client);
+      console.log("minted client: ", client);
+      await tx.wait();
+      alert("Tokens minted successfully");
+    } catch (error) {
+      console.error("Error minting tokens:", error);
+    }
+  };
+
+  const handleClick = () => {
+    balanceOf(currentAddress);
+    setClicked(true);
+  };
+
+  useEffect(() => {
+    const currentAddress = state.currentAddress;
+    setClient(currentAddress);
+  });
+
+  useEffect(() => {
+    balanceOf(currentAddress);
+  }, [balance]);
+
   return (
     <div className="min-h-[80vh] my-10 mt-0 px-32 ">
-      <h1 className="text-6xl text-gray-900 mb-5">Create a new Gig</h1>
-      <h3 className="text-3xl text-gray-900 mb-5">
-        Enter the details to create the gig
-      </h3>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-6xl text-gray-900 mb-5">Create a new Gig</h1>
+          <h3 className="text-3xl text-gray-900 mb-5">
+            Enter the details to create the gig
+          </h3>
+        </div>
+        <div className="">
+          <span className="text-lg">Please mint token before creating gig</span>
+          <div className="flex flex-col gap-2">
+            <input type="number" id="mintAmount" placeholder="Amount" />
+            <button
+              onClick={() =>
+                mintTokens(document.getElementById("mintAmount").value)
+              }
+              className="border text-lg font-semibold px-5 py-3   border-[#1DBF73] bg-[#1DBF73] text-white rounded-md"
+            >
+              Mint Tokens
+            </button>
+            <button 
+        onClick={handleClick} 
+        className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 font-medium text-lg px-10 py-3 rounded-md"
+      >
+        {clicked ? `Token Balance : ${balance}` : 'Get Token Balance'}
+      </button>
+          </div>
+          <br />
+        </div>
+      </div>
       <form action="" className="flex flex-col gap-5 mt-10">
         <div className="grid grid-cols-2 gap-11">
           <div>
