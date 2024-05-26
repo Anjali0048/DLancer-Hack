@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { CREATE_ORDER } from "../utils/constants";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../components/CheckoutForm";
+// import CheckoutForm from "../components/CheckoutForm";
 import { useRouter } from "next/router";
 
 const stripePromise = loadStripe("pk_test_xeqIPdYS2PpKbHmKG4gJqpde");
@@ -39,9 +39,9 @@ function Checkout() {
         Please complete the payment to place the order.
       </h1>
       {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
+        // <Elements options={options} stripe={stripePromise}>
+        //   <CheckoutForm />
+        // </Elements>
       )}
     </div>
   );
